@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/1935d064dd.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>My Notes App</h1>
+
+    </div>
+</header>
+<section>
+    <div class="container">
+        <h2>Your Notes</h2>
+        <hr>
+        <div class="items">
+            <p class="div1">Name</p>
+            <p class="div1">Created</p>
+            <p class="div1">Category</p>
+            <p class="div1">Content</p>
+            <p class="div1">Date</p>
+            <i class="div1 fa fa-archive    "></i>
+            <i class="div1 fa fa-edit"></i>
+            <i class="div1 fa fa-trash"></i>
+
+        </div>
+        <div id="notes" class="notes">
+        </div>
+        <form action="">
+            <input type="text" id="note-title" placeholder="Note title">
+            <input type="text" id="note-category" placeholder="category">
+            <input type="date" id="note-date">
+            <textarea name="" id="note-text" placeholder="Content"></textarea>
+            <button id="add-btn">Add Note</button>
+        </form>
+        <hr>
+        <div class="items1">
+            <p class=>Note Category</p>
+            <p>Active</p>
+            <p>Archived</p>
+
+            </div>
+        <div id="summary-notes" class="notes">
+        </div>
+
+    <h2>Your Achieved Notes</h2>
+    <hr>
+    <div class="items">
+        <p class="div1">Name</p>
+        <p class="div1">Created</p>
+        <p class="div1">Category</p>
+        <p class="div1">Content</p>
+        <p class="div1">Date</p>
+        <i class="div1 fa fa-archive    "></i>
+
+    </div>
+    <div id="achieve-notes" class="notes">
+    </div>
+    </div>
+</section>
+
+<script src="script.js"></script>
+
+
+</body>
+</html>
