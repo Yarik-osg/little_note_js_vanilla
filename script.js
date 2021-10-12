@@ -148,7 +148,6 @@ function deleteNote(index) {
         localStorage.setItem("notes", JSON.stringify(notesObj))
         showNotes()
         showSummary()
-        showArchiveNotes()
     }
 }
 
@@ -174,9 +173,7 @@ function editNote(index) {
     })
     notesObj.splice(index, 1);
     localStorage.setItem("notes", JSON.stringify(notesObj))
-    showNotes()
-    showSummary()
-    showArchiveNotes()
+
 }
 
 
