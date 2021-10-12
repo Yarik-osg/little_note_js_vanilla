@@ -35,7 +35,11 @@
         </div>
         <form action="">
             <input type="text" id="note-title" placeholder="Note title">
-            <input type="text" id="note-category" placeholder="category">
+            <select id="note-category">
+                <option value="Task" selected="selected">Task</option>
+                <option value="Idea">Idea</option>
+                <option value="Random Thought">Random Thought</option>
+            </select>
             <input type="date" id="note-date">
             <textarea name="" id="note-text" placeholder="Content"></textarea>
             <button id="add-btn">Add Note</button>
