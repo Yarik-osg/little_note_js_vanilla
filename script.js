@@ -4,11 +4,11 @@ let addTxt = document.getElementById("note-text")
 let addCat = document.getElementById("note-category")
 let addDate = document.getElementById("note-date")
 let time = new Date().toDateString()
-
 addBtn.addEventListener("click", (e) => {
     if (addTitle.value === "" || addTxt.value === "" || addCat.value === "") {
         return alert("Please complete Note")
     }
+    let notesObj
     let notes = localStorage.getItem("notes")
     if (notes === null) {
         notesObj = [];
@@ -34,14 +34,14 @@ addBtn.addEventListener("click", (e) => {
     addTitle.value = ""
     addTxt.value = ""
     addCat.value = ""
-     addDate.value=""
+    addDate.value=""
     showNotes()
-    showAchieveNotes()
+    showArchiveNotes()
     showSummary()
 })
-
 function showNotes() {
     let notes = localStorage.getItem("notes")
+    let notesObj
     if (notes === null) {
         notesObj = [];
     } else {
@@ -58,7 +58,7 @@ function showNotes() {
                 <p class="note-text"> ${element.text}</p>
                 <p class="note-text">${element.date}</p>
                 <div style="display: grid; grid-auto-flow: column;gap: 1rem">
-                 <button id="${index}" onclick="achieveNote(this.id)" class="note-btn-archieve"><i class="fa fa-archive"></i></button>
+                 <button id="${index}" onclick="archiveNote(this.id)" class="note-btn-archieve"><i class="fa fa-archive"></i></button>
                      <button id="${index}" onclick="editNote(this.id)" class="note-btn-edit"><i class="fa fa-edit"></i></button>
                     <button id="${index}" onclick="deleteNote(this.id)" class="note-btn-delete"><i class="fa fa-trash"></i></button>
                 </div>
@@ -73,10 +73,70 @@ function showNotes() {
         noteElm.innerHTML = "at First, add the note, please"
     }
 }
+function showSummary() {
+    let notes = localStorage.getItem("notes")
+    let notesObj
+    let archiveNotesObj
+    if (notes === null) {
+        notesObj = [];
+    } else {
+        notesObj = JSON.parse(notes)
+    }
+    let archiveNotes = localStorage.getItem("archive-notes")
+    if (archiveNotes === null) {
+        archiveNotesObj = [];
+    } else {
+        archiveNotesObj = JSON.parse(archiveNotes)
+    }
+    console.log(notesObj)
+    let task=0;
+    let random =0;
+    let archive_task=0
+    let archive_random=0
+
+    for (let key in notesObj)
+    {
+        console.log(notesObj[key].category)
+
+        if(notesObj[key].category==="Task")
+            task++;
+        else
+            random++;
+
+    }
+    for (let keys in archiveNotesObj)
+    {
+
+
+        if(archiveNotesObj[keys].category==="Task")
+            archive_task++;
+        else
+            archive_random++;
+
+    }
+    let html = ""
+
+    html += `<div class="items1">
+            <p>Task</p>
+            <p>${task}</p>
+            <p>${archive_task}</p>
+            </div>
+            <div class="items1">
+            <p>Random thought</p>
+            <p>${random}</p>
+            <p>${archive_random}</p>
+            </div>
+        `
+    task=0
+    random = 0
+    let noteElm = document.getElementById("summary-notes")
+    noteElm.innerHTML = html
+
+}
 
 function deleteNote(index) {
     let confirmDel = confirm("You are deleting this note")
-
+    let notesObj
     if (confirmDel === true) {
         let notes = localStorage.getItem("notes")
         if (notes === null) {
@@ -88,7 +148,7 @@ function deleteNote(index) {
         localStorage.setItem("notes", JSON.stringify(notesObj))
         showNotes()
         showSummary()
-        showAchieveNotes()
+        showArchiveNotes()
     }
 }
 
@@ -98,6 +158,7 @@ function editNote(index) {
     if (addTitle.value !== "" || addTxt.value !== "") {
         return alert("Please clear the form")
     }
+    let notesObj
     if (notes === null) {
         notesObj = [];
     } else {
@@ -115,64 +176,69 @@ function editNote(index) {
     localStorage.setItem("notes", JSON.stringify(notesObj))
     showNotes()
     showSummary()
-    showAchieveNotes()
+    showArchiveNotes()
 }
 
 
-function achieveNote(index) {
+function archiveNote(index) {
     let notes = localStorage.getItem("notes")
-    let achieveNotes = localStorage.getItem("achieve-notes")
+    let archiveNotes = localStorage.getItem("archive-notes")
+    let notesObj
     if (notes === null) {
         notesObj = [];
     } else {
         notesObj = JSON.parse(notes)
     }
-    if (achieveNotes === null) {
-        achieveNotesObj = [];
+    let archiveNotesObj
+    if (archiveNotes === null) {
+        archiveNotesObj = [];
     } else {
-        achieveNotesObj = JSON.parse(achieveNotes)
+        archiveNotesObj = JSON.parse(archiveNotes)
     }
-    achieveNotesObj.push(notesObj[index])
-    localStorage.setItem("achieve-notes", JSON.stringify(achieveNotesObj))
+    archiveNotesObj.push(notesObj[index])
+    localStorage.setItem("archive-notes", JSON.stringify(archiveNotesObj))
     notesObj.splice(index, 1);
 
     localStorage.setItem("notes", JSON.stringify(notesObj))
     showNotes()
     showSummary()
-    showAchieveNotes()
+    showArchiveNotes()
 }
-function unAchieveNote(index) {
+function unArchiveNote(index) {
     let notes = localStorage.getItem("notes")
-    let achieveNotes = localStorage.getItem("achieve-notes")
+    let archiveNotes = localStorage.getItem("archive-notes")
+    let notesObj
+    let archiveNotesObj
     if (notes === null) {
         notesObj = [];
     } else {
         notesObj = JSON.parse(notes)
     }
-    if (achieveNotes === null) {
-        achieveNotesObj = [];
+    if (archiveNotes === null) {
+        archiveNotesObj = [];
     } else {
-        achieveNotesObj = JSON.parse(achieveNotes)
+        archiveNotesObj = JSON.parse(archiveNotes)
     }
-    notesObj.push(achieveNotesObj[index])
+    notesObj.push(archiveNotesObj[index])
     localStorage.setItem("notes", JSON.stringify(notesObj))
-    achieveNotesObj.splice(index, 1);
+    archiveNotesObj.splice(index, 1);
 
-    localStorage.setItem("achieve-notes", JSON.stringify(achieveNotesObj))
+    localStorage.setItem("archive-notes", JSON.stringify(archiveNotesObj))
     showNotes()
     showSummary()
-    showAchieveNotes()
+    showArchiveNotes()
 }
-function showAchieveNotes() {
-    let achieveNotes = localStorage.getItem("achieve-notes")
-    if (achieveNotes === null) {
-        achieveNotesObj = [];
+function showArchiveNotes() {
+    let archiveNotes = localStorage.getItem("archive-notes")
+    let archiveNotesObj
+    if (archiveNotes === null) {
+        archiveNotesObj = [];
     } else {
-        achieveNotesObj = JSON.parse(achieveNotes)
+        archiveNotesObj = JSON.parse(archiveNotes)
     }
-    console.log(achieveNotesObj)
+    console.log(archiveNotesObj)
     let html = ""
-    achieveNotesObj.forEach(function (element, index) {
+    archiveNotesObj.forEach(function (element, index) {
         html += `<div class="items">
                 <h3 class="note-title"> ${element.title}</h3> 
                  <p class="note-text"> ${time}</p>
@@ -180,80 +246,15 @@ function showAchieveNotes() {
                 <p class="note-text"> ${element.text}</p>
                 <p class="note-text">${element.date}</p>
                 <div style="display: grid; grid-auto-flow: column;gap: 1rem">
-                 <button id="${index}" onclick="unAchieveNote(this.id)" class="note-btn-archieve"><i class="fa fa-archive"></i></button>
+                 <button id="${index}" onclick="unArchiveNote(this.id)" class="note-btn-archieve"><i class="fa fa-archive"></i></button>
                 
                 </div>
             </div>
             <hr>
         `
     })
-    let noteElm = document.getElementById("achieve-notes")
-    if (achieveNotesObj.length !== 0) {
-        noteElm.innerHTML = html
-    } else {
-        noteElm.innerHTML = "at First, add the note, please"
-    }
-}
-function showSummary() {
-    let notes = localStorage.getItem("notes")
-    if (notes === null) {
-        notesObj = [];
-    } else {
-        notesObj = JSON.parse(notes)
-    }
-    let achieveNotes = localStorage.getItem("achieve-notes")
-    if (achieveNotes === null) {
-        achieveNotesObj = [];
-    } else {
-        achieveNotesObj = JSON.parse(achieveNotes)
-    }
-    console.log(notesObj)
-    let task=0;
-    let random =0;
-    let achieve_task=0
-    let achieve_random=0
-
-    for (let key in notesObj)
-    {
-        console.log(notesObj[key].category)
-
-        if(notesObj[key].category==="Task")
-            task++;
-        else
-            random++;
-
-    }
-    for (let keys in achieveNotesObj)
-    {
-        console.log(achieveNotesObj[keys].category)
-
-        if(achieveNotesObj[keys].category==="Task")
-            achieve_task++;
-        else
-            achieve_random++;
-
-    }
-    console.log(task)
-    console.log(random)
-    console.log(achieve_task)
-    console.log(achieve_random)
-    let html = ""
-
-    html += `<div class="items1">
-            <p>Task</p>
-            <p>${task}</p>
-            <p>${achieve_task}</p>
-            </div>
-            <div class="items1">
-            <p>Random thought</p>
-            <p>${random}</p>
-            <p>${achieve_random}</p>
-            </div>
-        `
-    task=0
-    random = 0
-    let noteElm = document.getElementById("summary-notes")
-    if (notesObj.length !== 0) {
+    let noteElm = document.getElementById("archive-notes")
+    if (archiveNotesObj.length !== 0) {
         noteElm.innerHTML = html
     } else {
         noteElm.innerHTML = "at First, add the note, please"
@@ -262,4 +263,4 @@ function showSummary() {
 
 showNotes()
 showSummary()
-showAchieveNotes()
+showArchiveNotes()
